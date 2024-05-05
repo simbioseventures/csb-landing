@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.table-zebra thead{
+    background-color: #F1EEEE;
+  }
+  
+  .table-zebra tr:nth-child(odd){
+    background-color: #FFFFFF;
+  }
+  
+  .table-zebra tr:nth-child(even){
+    background-color: #e8e8e8 !important;
+  }
+  
+  .table-zebra input:nth-child(odd){
+    background-color: #e8e8e8;
+  }
+  
+  .table-zebra input:nth-child(even){
+    background-color: #FFFFFF;
+  }
