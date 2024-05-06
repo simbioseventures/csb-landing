@@ -1,11 +1,11 @@
 import './App.css'
 import { useParams } from "react-router-dom";
 import * as jose from 'jose'
-import Circles1 from "./assets/bg-circles1.png"
-import Circles2 from "./assets/bg-circles2.png"
+import Circles1 from "/assets/bg-circles1.png"
+import Circles2 from "/assets/bg-circles2.png"
 import VotePage from "./VotePage.tsx"
 import AlreadyVoted from "./AlreadyVoted.tsx"
-import CSBLogo from "./assets/logo-csb.png"
+import CSBLogo from "/assets/logo-csb.png"
 import {useState, useLayoutEffect, useContext} from 'react'
 
 

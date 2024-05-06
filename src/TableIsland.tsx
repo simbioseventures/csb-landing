@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Flight from "./assets/flight.png";
-import City from "./assets/smart-city.png";
-import Robot from "./assets/robot.png"
-import Rocket from "./assets/rocket.png"
-import Ocean from "./assets/ocean.png"
-import Talk from "./assets/talk.png"
-import ArrowUp from "./assets/arrow-up.png";
-import ArrowDown from "./assets/arrow-down.png";
+import Flight from "/assets/flight.png";
+import City from "/assets/smart-city.png";
+import Robot from "/assets/robot.png"
+import Rocket from "/assets/rocket.png"
+import Ocean from "/assets/ocean.png"
+import Talk from "/assets/talk.png"
+import ArrowUp from "/assets/arrow-up.png";
+import ArrowDown from "/assets/arrow-down.png";
 import {useContext} from 'react'
 import { Iinfos } from "./utils/types";
 import { VoteContext } from "./context/voteContext";
