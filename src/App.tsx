@@ -1,5 +1,5 @@
 import './App.css'
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import * as jose from 'jose'
 import Circles1 from "/assets/bg-circles1.png"
 import Circles2 from "/assets/bg-circles2.png"
@@ -7,10 +7,7 @@ import VotePage from "./VotePage.tsx"
 import AlreadyVoted from "./AlreadyVoted.tsx"
 import CSBLogo from "/assets/logo-csb.png"
 import {useState, useLayoutEffect, useContext} from 'react'
-
-
 import { ThreeDots } from 'react-loader-spinner'
-
 import fetchUserData from "./lib.tsx"
 import InvalidTokenPage from './InvalidTokenPage.tsx';
 import { ITeacherData } from './utils/types.ts';
