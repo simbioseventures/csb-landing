@@ -1,5 +1,5 @@
 import './App.css'
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import * as jose from 'jose'
 import Circles1 from "/assets/bg-circles1.png"
 import Circles2 from "/assets/bg-circles2.png"
@@ -19,7 +19,7 @@ import { VoteContext } from './context/voteContext.tsx';
 
 function App() {
   const secret_jwt = import.meta.env.VITE_SECRET_JWT;
-  const { token } = useParams()
+  const  token  = useLocation().search.slice(1)
   const [isLoading, setIsLoading] = useState(true)
   const [invalidJWT, setInvalidJWT] = useState(false)
   //const secret = jose.base64url.decode('mySecretKey');
@@ -35,6 +35,7 @@ function App() {
   }
 
   const verifyJwt = async () => {
+    console.log(token)
     try {
       const { payload } = await jose.jwtVerify(token as string, secret)
       return payload

@@ -10,7 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/:token" element={<App />} />
     </Routes>
   </BrowserRouter>
   </VoteContextProvider>
