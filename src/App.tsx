@@ -6,43 +6,95 @@ import Circles2 from "./assets/bg-circles2.png"
 import VotePage from "./VotePage.tsx"
 import AlreadyVoted from "./AlreadyVoted.tsx"
 import CSBLogo from "./assets/logo-csb.png"
-import {useState, useEffect, useContext} from 'react'
-import {VoteContext} from './context/voteContext/'
+import {useState, useLayoutEffect, useContext} from 'react'
+
+
+import { ThreeDots } from 'react-loader-spinner'
 
 import fetchUserData from "./lib.tsx"
+import InvalidTokenPage from './InvalidTokenPage.tsx';
+import { ITeacherData } from './utils/types.ts';
+import { VoteContext } from './context/voteContext.tsx';
 
-interface Iinfos {
-  "id": number,
-  "name": string,
-  "class": string,
-  "school": string
-
-}
 
 function App() {
-  
+  const secret_jwt = import.meta.env.VITE_SECRET_JWT;
   const { token } = useParams()
-  const secret = jose.base64url.decode('mySecretKey');
-  const infos:Iinfos = jose.decodeJwt(token as string)
-  const [teacherData, setTeacherData] = useState(null); // Estado para armazenar os dados do professor
-  const { voted } = useContext(VoteContext)
+  const [isLoading, setIsLoading] = useState(true)
+  const [invalidJWT, setInvalidJWT] = useState(false)
+  //const secret = jose.base64url.decode('mySecretKey');
+  //const infos:Iinfos = jose.decodeJwt(token as string)
 
+  const secret = new TextEncoder().encode(secret_jwt)
 
-useEffect(() => {
-  const fetchData = async () => {
+  const myObj = {
+    "id": undefined,
+    "name": '',
+    "class": '',
+    "school": ''
+  }
+
+  const verifyJwt = async () => {
     try {
-      const data = await fetchUserData(infos.id); // Chame a função fetchUserData
-      setTeacherData(data); // Atualize o estado com os dados retornados
-      
+      const { payload } = await jose.jwtVerify(token as string, secret)
+      return payload
+    } catch (error) {
+      setInvalidJWT(true)
+      return error
+    }
+  }
+
+  const [teacherData, setTeacherData] = useState<ITeacherData[]|null >(null);
+  const { voted } = useContext(VoteContext)
+  const [infos, setInfos] = useState(myObj)
+  
+
+  const myFunc = async()=>{
+    const result = await verifyJwt()
+    setInfos(result)
+  }
+
+  useLayoutEffect(()=>{
+    myFunc()
+  }, [])
+
+  
+
+useLayoutEffect(() => {
+  const fetchData = async (id:number) => {
+    try {
+      const data = await fetchUserData(id); 
+      setTeacherData(data);
     } catch (error) {
       console.error('Error fetching teacher data:', error.message);
+      setInvalidJWT(true)
+    } finally {
+      setIsLoading(false)
     }
   };
 
-  fetchData(); // Chame a função fetchData ao montar o componente
-}, [infos.id]);
+  if(infos?.id){
+    fetchData(infos.id);
+  } 
+}, [infos?.id]);
 
-
+  function handleRender(){
+    if(invalidJWT) return <InvalidTokenPage />
+    if(isLoading){
+      return (<ThreeDots
+        visible={true}
+        height="80"
+        width="80"
+        color="#fff"
+        radius="9"
+        ariaLabel="three-dots-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+      />)
+    }
+    if(teacherData && teacherData[0].votou || voted) return <AlreadyVoted />
+    return <VotePage infos={infos}/>
+  }
 
   return (
 
@@ -60,7 +112,13 @@ useEffect(() => {
 
     <div className=" relative  text-white  flex flex-col items-center gap-4 justify-center p-4 text-center">
       <img src={CSBLogo} alt="Csb Logo" />
-      {teacherData && teacherData[0].votou || voted ? (<AlreadyVoted />) : (<VotePage infos={infos}/>) }
+
+
+      {handleRender()}
+      {/*teacherData && teacherData[0].votou || voted ? (<AlreadyVoted />) : (<VotePage infos={infos}/>)*/ }
+      
+
+
       </div>
     </div>
 

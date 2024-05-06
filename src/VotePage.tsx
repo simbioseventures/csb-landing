@@ -1,7 +1,7 @@
 import TableIsland from './TableIsland'
+import { Iinfos } from './utils/types.ts';
 
-
-const VotePage = ({infos}) => {
+const VotePage = ({infos}: {infos:Iinfos}) => {
   
     return(
         

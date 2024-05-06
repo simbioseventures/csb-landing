@@ -7,9 +7,10 @@ import Ocean from "./assets/ocean.png"
 import Talk from "./assets/talk.png"
 import ArrowUp from "./assets/arrow-up.png";
 import ArrowDown from "./assets/arrow-down.png";
-import saveThemes from './saveThemes/'
-import {useEffect, useContext} from 'react'
-import {VoteContext} from './context/voteContext/'
+import {useContext} from 'react'
+import { Iinfos } from "./utils/types";
+import { VoteContext } from "./context/voteContext";
+import saveThemes from "./saveThemes";
 
 interface IThemes {
   id: number;
@@ -42,16 +43,6 @@ const Ordenator = ({
           className={buttonStyle}
         >
           <img src={ArrowUp} alt="icon" />
-          {
-            /*<Picture>
-            <Source
-              media="(max-width: 768px)"
-              src="./assets/arrow-up.png"
-              width={270}
-              height={377}
-            />
-          </Picture>*/
-          }
         </button>
       )}
 
@@ -62,24 +53,14 @@ const Ordenator = ({
           className={buttonStyle}
         >
           <img src={ArrowDown} alt="icon" />
-          {
-            /*<Picture>
-            <Source
-              media="(max-width: 768px)"
-              src="./assets/arrow-down.png"
-              width={270}
-              height={377}
-            />
-          </Picture>*/
-          }
         </button>
       )}
     </div>
   );
 };
 
-export default function TableIsland({infos}) {
-  const {voted, setVoted} = useContext(VoteContext)
+export default function TableIsland({infos}:{infos:Iinfos}) {
+  const {setVoted} = useContext(VoteContext)
 
     const [themes, setThemes] = useState([
         { id: 1, theme: "Aviação", icon: Flight },
@@ -141,23 +122,16 @@ export default function TableIsland({infos}) {
               <td>{theme.theme}</td>
               <td>
                 <img src={theme.icon} alt="icon" />
-                {
-                  /*<Image
-                  src={theme.icon}
-                  width={100}
-                  preload
-                  loading="eager"
-                  fetchPriority="high"
-                />*/
-                }
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <button className="bg-[#97DAC1] m-4 rounded-lg px-16 py-3 font-semibold hover:bg-[#6CF2C0]" onClick={()=>{
-        saveThemes(infos.id, idsArray)
+        if(infos?.id){
+          saveThemes(infos.id, idsArray)
         setVoted(true);
+        }
       }}>
         Enviar
       </button>
